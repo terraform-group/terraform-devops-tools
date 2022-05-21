@@ -1,6 +1,9 @@
 # terraform-devops-tools
 使用Terraform操作Docker部署DevOps工具链
 
+- 需要Docker-CE环境
+- 需要部署Terraform
+- 修改docker主机的配置在main.tf
 
 
 
