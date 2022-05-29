@@ -1,6 +1,6 @@
 resource "docker_image" "jenkins" {
   name         = "jenkins/jenkins:2.332.2-centos7-jdk8"
-  keep_locally = true  //销毁时不删除本地镜像
+  keep_locally = true //销毁时不删除本地镜像
 }
 
 resource "docker_container" "jenkins" {
@@ -11,11 +11,11 @@ resource "docker_container" "jenkins" {
     external = 8080
   }
   ports {
-      internal = 50000
-      external = 50000
+    internal = 50000
+    external = 50000
   }
-  volumes{
-      container_path = "/var/jenkins_home"
-      host_path = "/data/devops4/jenkins_home"
+  volumes {
+    container_path = "/var/jenkins_home"
+    host_path      = "/data/devops4/jenkins_home"
   }
 }
