@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: demoapp
+            port:
+              number: 80
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    k8s-app: demoapp
+  name: demoapp
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: demoapp
+  template:
+    metadata:
+      labels:
+        k8s-app: demoapp
+      namespace: default
+      name: demoapp
+    spec:
+      containers:
+        - name: demoapp
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: web
+              protocol: TCP
+      serviceAccountName: demoapp
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: demoapp
+  name: demoapp
+  namespace: default
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: demoapp
+  name: demoapp
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+  selector:
+    k8s-app: demoapp
