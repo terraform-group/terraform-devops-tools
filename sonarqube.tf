@@ -40,8 +40,4 @@ resource "docker_container" "sonarqube" {
       host_path      = volumes.value["host_path"]
     }
   }
-  volumes {
-    container_path = "/var/jenkins_home"
-    host_path      = "/data/devops4/jenkins_home"
-  }
 }
